@@ -157,7 +157,7 @@ public class GreedyInliningPolicy extends AbstractInliningPolicy {
         // Initialize FeatureVector
         FeatureVector feature = new FeatureVector();
         // Set the function name
-        feature.setFuncName(info.toString());
+        feature.setFuncName(invocation.toString());
         // Populate Numerical Features
         feature.setProbability(probability);
         feature.setRelevance(relevance);
