@@ -220,6 +220,9 @@ public final class HostedMethod extends HostedElement implements SharedMethod, W
     public HostedMethod[] getImplementations() {
         return implementations;
     }
+    public String GetName() {
+        return name;
+    }
 
     public String getQualifiedName() {
         return wrapped.getQualifiedName();
@@ -532,6 +535,7 @@ public final class HostedMethod extends HostedElement implements SharedMethod, W
     public String toString() {
         return "HostedMethod<" + format("%h.%n") + " -> " + wrapped.toString() + ">";
     }
+
 
     @Override
     public LocalVariableTable getLocalVariableTable() {

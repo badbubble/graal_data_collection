@@ -138,6 +138,12 @@ import jdk.vm.ci.code.site.Reference;
 import jdk.vm.ci.meta.MetaAccessProvider;
 import jdk.vm.ci.meta.ResolvedJavaMethod;
 import jdk.vm.ci.meta.VMConstant;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.io.IOException;
+
 
 public class CompileQueue {
 
@@ -851,7 +857,60 @@ public class CompileQueue {
         }
     }
 
+
+    private static final Map<String, Integer> functionInliningLabels = new HashMap<>();
+
+    static {
+        loadFunctionLabels("/home/peter/Projects/graal_scripts/ml_result.csv");
+    }
+
+    private static void loadFunctionLabels(String csvFilePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+
+            String line;
+            // Skip header if exists
+            boolean isFirstLine = true;
+
+            while ((line = br.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
+
+                // Split the CSV line
+                String[] values = line.split("@");
+                if (values.length >= 2) {
+                    String functionName = values[0].trim();
+                    try {
+                        int label = Integer.parseInt(values[1].trim());
+                        if (label == 0 || label == 1) {
+                            functionInliningLabels.put(functionName, label);
+                        } else {
+                            System.err.println("Invalid label for function " + functionName + ": " + label);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid label format for function " + functionName);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error reading CSV file: " + e.getMessage());
+        }
+    }
+
+    public static Integer getLabelForFunction(String functionName) {
+        return functionInliningLabels.get(functionName);
+    }
+
+    // Method to check if a function exists in the map
+    public static boolean hasFunction(String functionName) {
+        return functionInliningLabels.containsKey(functionName);
+    }
+
+
     private boolean makeInlineDecision(HostedMethod method, HostedMethod callee) {
+
         if (!SubstrateOptions.UseSharedLayerStrengthenedGraphs.getValue() && callee.compilationInfo.getCompilationGraph() == null) {
             /*
              * We have compiled this method in a prior layer, but don't have the graph available
@@ -869,6 +928,12 @@ public class CompileQueue {
         if (optionAOTTrivialInline && callee.compilationInfo.isTrivialMethod() && !method.compilationInfo.isTrivialInliningDisabled()) {
             return true;
         }
+//        if (hasFunction(method.getQualifiedName())) {
+//            if (functionInliningLabels.get(method.getQualifiedName()) == 1) {
+//                System.out.println("yes");
+//                return true;
+//            }
+//        }
         return false;
     }
 
