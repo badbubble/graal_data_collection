@@ -861,7 +861,7 @@ public class CompileQueue {
     private static final Map<String, Integer> functionInliningLabels = new HashMap<>();
 
     static {
-        loadFunctionLabels("/home/peter/Projects/graal_scripts/ml_result.csv");
+        loadFunctionLabels("/home/peter/Projects/graal_scripts/ml_results/predictions.csv");
     }
 
     private static void loadFunctionLabels(String csvFilePath) {
@@ -911,6 +911,21 @@ public class CompileQueue {
 
     private boolean makeInlineDecision(HostedMethod method, HostedMethod callee) {
 
+        if (hasFunction(callee.getQualifiedName())) {
+            if (functionInliningLabels.get(callee.getQualifiedName()) == 1) {
+                System.out.println("yes");
+                return true;
+            }
+        }
+
+        if (hasFunction(callee.getQualifiedName())) {
+            if (functionInliningLabels.get(callee.getQualifiedName()) == 0) {
+                System.out.println("no");
+                return false;
+            }
+        }
+
+
         if (!SubstrateOptions.UseSharedLayerStrengthenedGraphs.getValue() && callee.compilationInfo.getCompilationGraph() == null) {
             /*
              * We have compiled this method in a prior layer, but don't have the graph available
@@ -919,21 +934,24 @@ public class CompileQueue {
             assert callee.isCompiledInPriorLayer() : method;
             return false;
         }
+
         if (universe.hostVM().neverInlineTrivial(method.getWrapped(), callee.getWrapped())) {
             return false;
         }
+
+
+
+
+
         if (callee.shouldBeInlined()) {
             return true;
         }
         if (optionAOTTrivialInline && callee.compilationInfo.isTrivialMethod() && !method.compilationInfo.isTrivialInliningDisabled()) {
             return true;
         }
-//        if (hasFunction(method.getQualifiedName())) {
-//            if (functionInliningLabels.get(method.getQualifiedName()) == 1) {
-//                System.out.println("yes");
-//                return true;
-//            }
-//        }
+
+
+
         return false;
     }
 
