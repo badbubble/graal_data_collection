@@ -88,24 +88,24 @@ public class FeatureVector {
 //    }
 
         return
-                funcName + "," +probability +
-                        "," + relevance +
-                        "," + inliningBonus +
-                        "," + nodes +
-                        "," + lowLevelGraphSize +
-                        "," + invokes +
-                        "," + inliningDepth +
-                        "," + isIntrinsic +
-                        "," + shouldInline +
-                        "," + hasSubstitution +
-                        "," + inlineEverything +
-                        "," + isTracing +
-                        "," + fullyProcessed +
-                        "," + nodesToMaximumNodesRatio +
-                        "," + lowLevelGraphSizeToThresholdRatio +
-                        "," + invokesToLimitRatio +
-                        "," + probabilityRelevanceInteraction +
-                        "," + nodesInliningBonusInteraction + "," + decision + '\n';
+                funcName + "@" +probability +
+                        "@" + relevance +
+                        "@" + inliningBonus +
+                        "@" + nodes +
+                        "@" + lowLevelGraphSize +
+                        "@" + invokes +
+                        "@" + inliningDepth +
+                        "@" + isIntrinsic +
+                        "@" + shouldInline +
+                        "@" + hasSubstitution +
+                        "@" + inlineEverything +
+                        "@" + isTracing +
+                        "@" + fullyProcessed +
+                        "@" + nodesToMaximumNodesRatio +
+                        "@" + lowLevelGraphSizeToThresholdRatio +
+                        "@" + invokesToLimitRatio +
+                        "@" + probabilityRelevanceInteraction +
+                        "@" + nodesInliningBonusInteraction + "@" + decision + '\n';
     }
 
     public void setRelevance(double relevance) {
