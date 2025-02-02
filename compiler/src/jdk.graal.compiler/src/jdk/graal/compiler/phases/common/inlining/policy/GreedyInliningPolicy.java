@@ -46,7 +46,7 @@ import jdk.graal.compiler.phases.common.inlining.walker.MethodInvocation;
 
 public class GreedyInliningPolicy extends AbstractInliningPolicy {
 
-    private static String SavePath = "/home/peter/Projects/graal_data_collection/compiler/data.csv";
+    private static String SavePath = "/root/Projects/data.csv";
 
     private static final CounterKey inliningStoppedByMaxDesiredSizeCounter = DebugContext.counter("InliningStoppedByMaxDesiredSize");
 
