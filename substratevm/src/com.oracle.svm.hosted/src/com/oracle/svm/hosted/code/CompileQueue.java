@@ -861,7 +861,7 @@ public class CompileQueue {
     private static final Map<String, Integer> functionInliningLabels = new HashMap<>();
 
     static {
-        loadFunctionLabels("/home/peter/Projects/graal_scripts/ml_results/predictions.csv");
+        loadFunctionLabels("/root/Projects/predictions.csv");
     }
 
     private static void loadFunctionLabels(String csvFilePath) {
